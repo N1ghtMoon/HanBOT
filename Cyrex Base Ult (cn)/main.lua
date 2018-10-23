@@ -138,11 +138,14 @@ end
 
 
 local function ontick()
-	if player.isDead then return end
-	track_recall();
+	if player.isDead or chat.isOpened then 
+		return 
+	end
+	
+	track_recall()
 	if menu.r.sb:get() then
 		if orb.combat.is_active() then
-			base_ult();
+			base_ult()
 		end
 	else
 		base_ult();
@@ -150,11 +153,14 @@ local function ontick()
 end
 
 local function ondraw()
+	if player.isDead or chat.isOpened then 
+		return
+	end
 	local pos = graphics.world_to_screen(player.pos)
 	if menu.r.ds:get() and player:spellSlot(3).state == 0 and player.isOnScreen then 
 		graphics.draw_text_2D("Base Ultimate: On", 14, pos.x-40, pos.y+49, graphics.argb(255,255,255,255))
 	end
 end
 
+cb.add(cb.tick, ontick)
 cb.add(cb.draw, ondraw)
-orb.combat.register_f_pre_tick(ontick)
