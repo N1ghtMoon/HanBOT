@@ -398,8 +398,10 @@ local function check_add_hero(o)
   end
 end
 
-cb.add(cb.create_minion, check_add_hero)
-cb.add(cb.create_minion, check_add_minion)
+cb.add(cb.createobj, function(obj) 
+  check_add_hero(obj)
+  check_add_minion(obj)
+end)
 
 objManager.loop(
   function(obj)
